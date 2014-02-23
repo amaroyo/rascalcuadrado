@@ -7,9 +7,12 @@ public class HolaMundo {
 	/**
 	 * 
 	 */
+	String mycosa = "hola world";
+	
 	public HolaMundo() {
 		// TODO Auto-generated constructor stub
 		System.out.println("Hola mundo:");
+		System.out.println(mycosa);
 		metodoAdios(HolaMundoEnum.rascalmeGatita.toString());
 	}
 
