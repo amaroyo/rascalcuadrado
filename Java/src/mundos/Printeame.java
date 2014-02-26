@@ -2,7 +2,7 @@ package mundos;
 
 import java.util.ArrayList;
 
-public class Printeame extends ArrayList<String> {
+public class Printeame /*extends ArrayList<String> */ extends HolaMundo{
 
 	String msg;
 
