@@ -23,11 +23,19 @@ public void extractInfo(project) {
 	methodSignatures = [m | <l,m> <- myModel@types, isMethod(l)];
 	println(methodSignatures);
 	println("-------------------------------------------");
-	println("Associations");
-	println("-------------------------------------------");
-	println("Generalisations");
-	println("-------------------------------------------");
-	println("Realisations");
+	println("Associations/Aggregation");
+	associationRelationships = [ <f,c> | <f,c> <- myModel@typeDependency, isField(f), isClass(c)];
+	println(associationRelationships);
 	println("-------------------------------------------");
 	println("Dependencies");
+	dependencyRelationships = [ <f,c> | <f,c> <- myModel@typeDependency, isMethod(f), isClass(c)];
+	println(dependencyRelationships);
+	println("-------------------------------------------");
+	println("Generalizations");
+	generalizationRelationships = [ <c1,c2> | <c1,c2> <- myModel@extends, isClass(c1), isClass(c2)];
+	println(generalizationRelationships);
+	println("-------------------------------------------");
+	println("Realization");
+	realizationRelationships = [ <c1,c2> | <c1,c2> <- myModel@typeDependency, isClass(c1), isInterface(c2)];
+	println(realizationRelationships);
 }
