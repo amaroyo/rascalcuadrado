@@ -5,7 +5,10 @@ import List;
 import lang::java::jdt::m3::Core;
 import lang::java::m3::Core;
 
-public void extractInfoFromM3(project) {
+import lang::ofg::ast::Java2OFG;
+import lang::ofg::ast::FlowLanguage;
+
+public void extractModelFromM3(project) {
 	myModel = createM3FromEclipseProject(project);
 	
 	//classNames = [ c | <c,l> <- myModel@names, isClass(l)];
@@ -51,9 +54,8 @@ public void extractInfoFromM3(project) {
 	println("Realization");
 	println(realizationRelationships);
 	
-	println();
-	println();
-	println();
-	println(methods(myModel));
-	
+}
+
+public void extractFlowGraphFromOFG(project) {
+	myFlowGraph = createOFG(project);
 }
