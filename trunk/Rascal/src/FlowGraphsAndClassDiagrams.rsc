@@ -1,5 +1,7 @@
 module FlowGraphsAndClassDiagrams
  
+/*Example code to compute flow graphs for Java and some basic UML diagramming*/ 
+ 
 import lang::ofg::ast::FlowLanguage;
 import lang::ofg::ast::Java2OFG;
 import List;
