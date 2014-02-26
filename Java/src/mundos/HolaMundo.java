@@ -2,31 +2,33 @@ package mundos;
 
 
 
-public class HolaMundo {
+public class HolaMundo implements Comparable {
 
 	/**
 	 * 
 	 */
-<<<<<<< .mine
 	private static int caca;
 	private Boolean b;
+	private Printeame p3;
 	
 	public class Hola2 {
 		
 		
 	}
 	
-=======
 	String mycosa = "hola world";
 	
->>>>>>> .r4
 	public HolaMundo() {
 		// TODO Auto-generated constructor stub
 		System.out.println("Hola mundo:");
 		System.out.println(mycosa);
 		metodoAdios(HolaMundoEnum.rascalmeGatita.toString());
+		Printeame p = new Printeame();
 	}
 
+	public void f(Printeame p) {p.getMsg(); }
+	public void f2() {Printeame p2 = new Printeame("pis"); p2.getMsg();}
+	
 	public void metodoAdios(String s) {
 		System.out.println(s);
 		System.out.println("Adios.");
@@ -45,6 +47,12 @@ public class HolaMundo {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
