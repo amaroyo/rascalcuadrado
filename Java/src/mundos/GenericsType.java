@@ -1,4 +1,4 @@
-package mundos;
+/*package mundos;
 
 public class GenericsType<T> {
 
@@ -13,4 +13,4 @@ public class GenericsType<T> {
 	}
 	
 	
-}
+}*/

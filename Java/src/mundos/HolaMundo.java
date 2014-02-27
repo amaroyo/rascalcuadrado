@@ -24,7 +24,7 @@ public class HolaMundo implements Comparable {
 		System.out.println(mycosa);
 		metodoAdios(HolaMundoEnum.rascalmeGatita.toString());
 		Printeame p = new Printeame();
-		GenericsType<Printeame> g = new GenericsType<>();
+		//GenericsType<Printeame> g = new GenericsType<>();
 		
 	}
 
