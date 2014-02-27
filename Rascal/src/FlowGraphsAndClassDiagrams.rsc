@@ -43,8 +43,10 @@ OFG prop(OFG g, rel[loc,loc] gen, rel[loc,loc] kill, bool back) {
  
 public void drawDiagram(M3 m) {
   classFigures = [box(text("<cl.path[1..]>"), id("<cl>")) | cl <- classes(m)]; 
-  edges = [edge("<to>", "<from>") | <from,to> <- m@extends ] +
-  [ edge("<to>", "<from>") | <from,to> <- m@typeDependency, isField(from), isClass(to)];  
+  edges = [edge("<to>", "<from>") | <from,to> <- m@extends ] 
+          + [edge("<to>", "<from>") | <from,to> <- m@typeDependency, isField(from), isClass(from), isClass(to)]
+          
+          ;  
   
   render(graph(classFigures, edges, hint("layered"), std(gap(10)), std(font("Bitstream Vera Sans")), std(fontSize(8))));
 }
