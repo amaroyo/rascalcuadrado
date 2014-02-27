@@ -47,17 +47,17 @@ public M3 extractInfo(project) {
 	println(associationRelationships);
 	println("-------------------------------------------");
 	
-	dependencyRelationships = { <f,c> | <f,c> <- myModel@typeDependency, isMethod(f), isClass(c)};
+	dependencyRelationships = { <f,c> | <f,c> <- myModel@typeDependency, isMethod(f), c <- classes(myModel)};
 	println("Dependencies");
 	println(dependencyRelationships);
 	println("-------------------------------------------");
 	
-	generalizationRelationships = { <c1,c2> | <c1,c2> <- myModel@extends};
+	generalizationRelationships = { <c1,c2> | <c1,c2> <- myModel@extends, from <- classes(m), to <- classes(m)};
 	println("Generalizations");
 	println(generalizationRelationships);
 	println("-------------------------------------------");
 	
-	realizationRelationships = { <c1,c2> | <c1,c2> <- myModel@implements};
+	realizationRelationships = { <c1,c2> | <c1,c2> <- myModel@implements, from <- classes(m), to <- classes(m)};
 	println("Realizations");
 	println(realizationRelationships);
 	
