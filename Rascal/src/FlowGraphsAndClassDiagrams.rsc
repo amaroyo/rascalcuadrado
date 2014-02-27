@@ -44,19 +44,19 @@ OFG prop(OFG g, rel[loc,loc] gen, rel[loc,loc] kill, bool back) {
 public void drawDiagram(M3 m) {
   classFigures = [box(text("<cl.path[1..]>"), id("<cl>")) | cl <- classes(m)]; 
   		  // Generalizations
-  edges = [edge("<to>", "<from>") | <from,to> <- m@extends, from <- classes(m), to <- classes(m)]
+  edges = [edge("<to>", "<from>", fromArrow(box(size(20)))) | <from,to> <- m@extends, from <- classes(m), to <- classes(m)]
  		  
  		  // Associations/Aggregations
-          + [edge("<to>", "<c>") | <from,to> <- m@typeDependency, isField(from), to <- classes(m), <c,from> <- m@containment]
+          + [edge("<to>", "<c>", toArrow(box(size(20)))) | <from,to> <- m@typeDependency, isField(from), to <- classes(m), <c,from> <- m@containment]
           
           // Dependencies
           //+ [ edge("<to>", "<c>") | <from,to> <- m@typeDependency, isMethod(from), to <- classes(m),<c,from> <- m@containment
          
           // Realizations
-          + [edge("<to>", "<from>") | <from,to> <- m@implements, from <- classes(m), to <- classes(m)]
-          +
+          + [edge("<to>", "<from>", toArrow(box(size(20)))) | <from,to> <- m@implements, from <- classes(m), to <- classes(m)]
+          
           ;
-  render(graph(classFigures, edges, hint("layered"), std(gap(16)), std(font("Bitstream Vera Sans")), std(fontSize(12))));
+  render(graph(classFigures, edges, hint("layered"), std(gap(50)), std(font("Bitstream Vera Sans")), std(fontSize(12))));
 }
  
 public str dotDiagram(M3 m) {
