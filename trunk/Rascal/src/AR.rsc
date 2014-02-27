@@ -7,6 +7,7 @@ the other generates a graphviz dot file with the same information.*/
  
 import lang::java::jdt::JDT;  // this module provides the API for extracting Java models
 import lang::java::jdt::Java; // this module provides the model for Java
+
  
 import Relation; // a stdlib module with practical API on relations
  
@@ -22,7 +23,7 @@ import IO;
   which can be rendered directly in the IDE. Figure also allows for interaction such as 
   hyperlinking to the source code, but this is not shown here.
 }
-public void drawDiagram(loc p) {
+public void drawDiagramAR(loc p) {
   int i = 0;
   int id() { i += 1; return i; } // a local function to generate unique id's
   

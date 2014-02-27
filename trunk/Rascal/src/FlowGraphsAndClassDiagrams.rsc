@@ -40,22 +40,31 @@ OFG prop(OFG g, rel[loc,loc] gen, rel[loc,loc] kill, bool back) {
   
   return OUT;
 }
+
+public OFG algorithm(OFG g) {
+	OFG aux = {};
+	for(r <- g) {
+		aux += prop(g,{r},toRel([]),false);
+	}
+	return aux;
+}
  
-public void drawDiagram(M3 m) {
+public void drawDiagram(M3 m, OFG g) {
   classFigures = [box(text("<cl.path[1..]>"), id("<cl>")) | cl <- classes(m)]; 
   		  // Generalizations
   edges = [edge("<to>", "<from>", fromArrow(box(size(20)))) | <from,to> <- m@extends, from <- classes(m), to <- classes(m)]
  		  
  		  // Associations/Aggregations
-          + [edge("<to>", "<c>", toArrow(box(size(20)))) | <from,to> <- m@typeDependency, isField(from), to <- classes(m), <c,from> <- m@containment]
+          + [edge("<to>", "<c>", fromArrow(box(size(20)))) | <from,to> <- m@typeDependency, isField(from), to <- classes(m), <c,from> <- m@containment]
           
           // Dependencies
           //+ [ edge("<to>", "<c>") | <from,to> <- m@typeDependency, isMethod(from), to <- classes(m),<c,from> <- m@containment
          
           // Realizations
-          + [edge("<to>", "<from>", toArrow(box(size(20)))) | <from,to> <- m@implements, from <- classes(m), to <- classes(m)]
+          + [edge("<to>", "<from>", toArrow(box(size(20)))) | <to,from> <- m@implements, from <- classes(m), to <- classes(m)]
           
           ;
+  edges += [edge("<to>", "<c>", fromArrow(box(size(20)))) | <to,from> <- g, isField(from), to <- classes(m), <c,from> <- m@containment];
   render(graph(classFigures, edges, hint("layered"), std(gap(50)), std(font("Bitstream Vera Sans")), std(fontSize(12))));
 }
  
