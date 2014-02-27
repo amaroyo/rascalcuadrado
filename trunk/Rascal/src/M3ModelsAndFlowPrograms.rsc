@@ -42,8 +42,8 @@ public M3 extractInfo(project) {
 	println(methodSignatures);
 	println("-------------------------------------------");
 	
-	associationRelationships = { <f,c> | <f,c> <- myModel@typeDependency, isField(f), isClass(c)};
-	println("Associations/Aggregation");
+	associationRelationships = { <f,c> | <f,c> <- myModel@typeDependency, isField(f), c <- classes(myModel)};
+	println("Associations/Aggregations");
 	println(associationRelationships);
 	println("-------------------------------------------");
 	
