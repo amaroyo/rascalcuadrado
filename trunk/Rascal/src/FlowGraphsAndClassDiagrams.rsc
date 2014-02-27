@@ -45,10 +45,13 @@ public void drawDiagram(M3 m) {
   classFigures = [box(text("<cl.path[1..]>"), id("<cl>")) | cl <- classes(m)]; 
   		  // Generalizations
   edges = [edge("<to>", "<from>") | <from,to> <- m@extends, from <- classes(m), to <- classes(m)]
+ 		  
  		  // Associations/Aggregations
           + [edge("<to>", "<c>") | <from,to> <- m@typeDependency, isField(from), to <- classes(m), <c,from> <- m@containment]
+          
           // Dependencies
           //+ [ edge("<to>", "<c>") | <from,to> <- m@typeDependency, isMethod(from), to <- classes(m),<c,from> <- m@containment
+         
           // Realizations
           + [edge("<to>", "<from>") | <from,to> <- m@implements, from <- classes(m), to <- classes(m)]
           ;

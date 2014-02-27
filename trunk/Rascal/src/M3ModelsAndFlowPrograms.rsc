@@ -52,12 +52,12 @@ public M3 extractInfo(project) {
 	println(dependencyRelationships);
 	println("-------------------------------------------");
 	
-	generalizationRelationships = { <c1,c2> | <c1,c2> <- myModel@extends, from <- classes(m), to <- classes(m)};
+	generalizationRelationships = { <c1,c2> | <c1,c2> <- myModel@extends, from <- classes(myModel), to <- classes(myModel)};
 	println("Generalizations");
 	println(generalizationRelationships);
 	println("-------------------------------------------");
 	
-	realizationRelationships = { <c1,c2> | <c1,c2> <- myModel@implements, from <- classes(m), to <- classes(m)};
+	realizationRelationships = { <c1,c2> | <c1,c2> <- myModel@implements, from <- classes(myModel), to <- classes(myModel)};
 	println("Realizations");
 	println(realizationRelationships);
 	
