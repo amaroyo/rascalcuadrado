@@ -54,6 +54,7 @@ public void drawDiagram(M3 m) {
          
           // Realizations
           + [edge("<to>", "<from>") | <from,to> <- m@implements, from <- classes(m), to <- classes(m)]
+          +
           ;
   render(graph(classFigures, edges, hint("layered"), std(gap(16)), std(font("Bitstream Vera Sans")), std(fontSize(12))));
 }
