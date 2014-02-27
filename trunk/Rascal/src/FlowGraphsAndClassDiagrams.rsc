@@ -19,9 +19,10 @@ public OFG buildGraph(Program p){
 		{ <as[i], fps[i]> | newAssign(x, cl, c, as) <- p.statemens, constructor(c, fps) <- p.decls, i <- index(as) }
   		+ { <cl + "this", x> | newAssign(x, cl, _, _) <- p.statemens }
   		+ { <x,y> | assign(x, _, y) <- p.statemens }
-  		;
-  		
-  		/* + ... etc */ 
+  		+ { <as[i], fps[i]> | call(x, _, y, m, as) <- p.statemens, method(m, fps) <- p.decls, i <- index(as) }   
+		+ { <y, m + "this"> | call(_, _, y, m, _) <- p.statemens }
+		+ { <m + "return", x> | call(x, _, _, m, _) <- p.statemens, x != emptyId}
+		;
   
   return myFlowGraph;
 }
@@ -43,7 +44,8 @@ OFG prop(OFG g, rel[loc,loc] gen, rel[loc,loc] kill, bool back) {
 
 public OFG algorithm(OFG g) {
 	OFG aux = {};
-	for(r <- g) {
+	case1 = { <f,c> | <f,c> <- myModel@typeDependency, isMethod(f), c <- classes(myModel)};
+
 		aux += prop(g,{r},toRel([]),false);
 	}
 	return aux;
@@ -64,7 +66,7 @@ public void drawDiagram(M3 m, OFG g) {
           + [edge("<to>", "<from>", toArrow(box(size(20)))) | <to,from> <- m@implements, from <- classes(m), to <- classes(m)]
           
           ;
-  edges += [edge("<to>", "<c>", fromArrow(box(size(20)))) | <to,from> <- g, isField(from), to <- classes(m), <c,from> <- m@containment];
+  //edges += [edge("<to>", "<c>", fromArrow(box(size(20)))) | <to,from> <- g, isField(from), to <- classes(m), <c,from> <- m@containment];
   render(graph(classFigures, edges, hint("layered"), std(gap(50)), std(font("Bitstream Vera Sans")), std(fontSize(12))));
 }
  
