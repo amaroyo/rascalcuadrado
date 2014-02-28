@@ -6,7 +6,7 @@ import Relation;
 
 //Information extraction
 import lang::java::jdt::m3::Core;
-import lang::java::m3::Core;
+import lang::java::jdt::m3::AST;
 
 //Architecture reconstruction
 import lang::ofg::ast::Java2OFG;

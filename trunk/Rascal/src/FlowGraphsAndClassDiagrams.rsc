@@ -7,6 +7,7 @@ import lang::ofg::ast::Java2OFG;
 import List;
 import Relation;
 import lang::java::m3::Core;
+
  
 import IO;
 import vis::Figure; 
@@ -44,13 +45,28 @@ OFG prop(OFG g, rel[loc,loc] gen, rel[loc,loc] kill, bool back) {
 
 public OFG algorithm(M3 m, OFG g) {
 	OFG aux = {};
-	non_gen = { f | <c,f> <- m@containment, c <- classes(m), f.scheme == "java+method"};
+	for(n <- g) {
+		if(m@containment, c <- classes(m), f.scheme == "java+constructor"){//O CASTING??=?=?=?=?=
+			caca[0]=g[n];
+			aux += prop(g,caca,toRel([]),false);
+			aux += prop(g,caca,toRel([]),true);
+		}
+		else{
+			caca[0]=g[n];
+			caca[1]=caca[0];
+		}
+		
+	}
+	/*non_gen = { f | <c,f> <- m@containment, c <- classes(m), f.scheme == "java+method"};
 	gen = { f | <c,f> <- m@containment, c <- classes(m), f.scheme == "java+constructor"};
-	aux += prop(g,{non_gen,)},toRel([]),false);
+	aux += prop(g,{<non_gen,toRel([])>},toRel([]),false);*/
 	return aux;
 }
  
-public void drawDiagram(M3 m, OFG g) {
+public void drawDiagram(M3 m, OFG omg) {
+	
+	//algo habra q hacer con OMGGG!!!!
+
   classFigures = [box(text("<cl.path[1..]>"), id("<cl>")) | cl <- classes(m)]; 
   		  // Generalizations
   edges = [edge("<to>", "<from>", fromArrow(box(size(20)))) | <from,to> <- m@extends, from <- classes(m), to <- classes(m)]
