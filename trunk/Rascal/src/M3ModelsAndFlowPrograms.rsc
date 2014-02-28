@@ -66,7 +66,7 @@ public M3 extractInfo(project) {
 }
 
 //Architecture reconstruction
-public Program reconstructArquitecture(project) {
+public Program reconstructArchitecture(project) {
 	Program myFlowProgram = createOFG(project);
 	return myFlowProgram;
 }

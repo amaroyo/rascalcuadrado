@@ -47,7 +47,7 @@ public OFG algorithm(OFG g) {
 	case1 = { <f,c> | <f,c> <- myModel@typeDependency, isMethod(f), c <- classes(myModel)};
 
 		aux += prop(g,{r},toRel([]),false);
-	}
+	
 	return aux;
 }
  
