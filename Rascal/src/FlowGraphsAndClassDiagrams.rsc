@@ -42,12 +42,11 @@ OFG prop(OFG g, rel[loc,loc] gen, rel[loc,loc] kill, bool back) {
   return OUT;
 }
 
-public OFG algorithm(OFG g) {
+public OFG algorithm(M3 m, OFG g) {
 	OFG aux = {};
-	case1 = { <f,c> | <f,c> <- myModel@typeDependency, isMethod(f), c <- classes(myModel)};
-
-		aux += prop(g,{r},toRel([]),false);
-	
+	non_gen = { f | <c,f> <- m@containment, c <- classes(m), f.scheme == "java+method"};
+	gen = { f | <c,f> <- m@containment, c <- classes(m), f.scheme == "java+constructor"};
+	aux += prop(g,{non_gen,)},toRel([]),false);
 	return aux;
 }
  
