@@ -12,6 +12,7 @@ public class HolaMundo implements Comparable {
 	private static int caca;
 	private Boolean b;
 	private Printeame p3;
+	private Integer miEntero;
 	
 	public class Hola2 {
 		
@@ -26,12 +27,14 @@ public class HolaMundo implements Comparable {
 		System.out.println(mycosa);
 		metodoAdios(HolaMundoEnum.rascalmeGatita.toString());
 		Printeame p = new Printeame();
+		miEntero=new Integer(4);
 		//GenericsType<Printeame> g = new GenericsType<>();
 		
 	}
 
 	public void f(Printeame p) {p.getMsg(); }
 	public void f2() {Printeame p2 = new Printeame("pis"); p2.getMsg();}
+	public Printeame cacacococucu(){Container c = new Container(); return (Printeame) c;}
 	
 	public void metodoAdios(String s) {
 		System.out.println(s);
