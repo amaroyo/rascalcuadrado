@@ -45,20 +45,21 @@ OFG prop(OFG g, rel[loc,loc] gen, rel[loc,loc] kill, bool back) {
 
 public OFG algorithm(M3 m, OFG g) {
 	OFG aux = {};
-	OFG miOfg = {<|java+class:///User/this|,|java+variable:///Main/addUser(java.lang.String)/user|>,<|java+variable:///Main/addUser(java.lang.String)/user|,|java+parameter:///Library/addUser(User)/user|>,<|java+field:///Library/users|,|java+parameter:///Library/addUser(User)/user|>};
+	OFG miOfg = {<|java+class:///User/this|,|java+variable:///Main/addUser(java.lang.String)/user|>,<|java+variable:///Main/addUser(java.lang.String)/user|,|java+parameter:///Library/addUser(User)/user|>,<|java+parameter:///Library/addUser(User)/user|,|java+field:///Library/users|>};
+	println("gen");
 	gen = { <c,g1> | <c,_> <- miOfg, c.scheme == "java+class", g1 := c.parent};
 	println(gen);
 	println("non_gen");
 	non_gen = { <nc,ng> | <nc,ng> <- miOfg, nc.scheme != "java+field"};
 	println(non_gen);
-	aux = aux + prop(g,gen+non_gen,toRel([]),false);
+	aux = aux + prop(miOfg,gen,toRel([]),false);
 	println(aux);
-	aux = aux + prop(g,gen+non_gen,toRel([]),true);
+	aux = aux + prop(miOfg,gen,toRel([]),true);
 	println(aux);
-	return aux;	
-	/*,*/
+	return aux;
 	/*OFG aux = {};
 	loc empty_loc;
+	println("non_gen");
 	gen = { <c,g1> | <c,_> <- g, c.scheme == "java+class", g1 := c.parent};
 	println(gen);
 	println("non_gen");
@@ -91,12 +92,13 @@ public void drawDiagram(M3 m, OFG omg) {
           			<to,from> <- m@implements, from <- classes(m), to <- classes(m)]
 			
 			
-		  + [edge("<from>", "<to>", fromArrow(box(size(20),fillColor("LightSkyBlue")))) |
-          			<from,to> <- omg, isField(to), from <- classes(m)]          
+		  + [edge("<to>", "<c>", fromArrow(box(size(20),fillColor("LightSkyBlue")))) |
+          			<from,to> <- omg, isField(from), to <- classes(m), <c,from> <- m@containment]          
           ;
           
-  
-  render(graph(classFigures, edges, hint("layered"), std(gap(50)), std(font("Bitstream Vera Sans")), std(fontSize(12))));
+  figure = graph(classFigures, edges, hint("layered"), std(gap(50)), std(font("Bitstream Vera Sans")), std(fontSize(12)));
+  render(figure);
+  //renderSave(figure, |file:///Users/Aleks/Desktop/figuraRascal.png|);
 }
  
 public str dotDiagram(M3 m) {
