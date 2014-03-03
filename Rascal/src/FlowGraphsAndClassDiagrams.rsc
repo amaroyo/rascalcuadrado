@@ -45,33 +45,22 @@ OFG prop(OFG g, rel[loc,loc] gen, rel[loc,loc] kill, bool back) {
 
 public OFG algorithm(M3 m, OFG g) {
 	OFG aux = {};
-	/*for(n <- g) {
-		if(m@containment, c <- classes(m), f.scheme == "java+constructor"){//O CASTING??=?=?=?=?=
-			caca[0]=g[n];
-			aux += prop(g,caca,toRel([]),false);
-			aux += prop(g,caca,toRel([]),true);
-		}
-		else{
-			caca[0]=g[n];
-			caca[1]=caca[0];
-		}
-		
-	}*/
-	println("gen");
-	gen = { <g1,c> | <c,g1> <- g, c.scheme == "java+class"};
+	loc empty_loc;
+	gen = { <c,g1> | <c,g1> <- g, c.scheme == "java+class"};
 	println(gen);
-	/*gen += { f | <c,f> <- m@containment, c <- classes(m), f.scheme == "java+constructor"};
-	aux += prop(g,{<non_gen,toRel([])>},toRel([]),false);*/
+	println("non_gen");
+	non_gen = { <ng,> | <c,ng> <- g, c.scheme != "java+class"};
+	println(non_gen);
+	aux = aux + prop(g,gen+non_gen,toRel([]),false);
+	println(aux);
+	aux = aux + prop(g,gen+non_gen,toRel([]),true);
+	aux = aux + {<caca>,<caca>};
+	println(aux);
 	return aux;
 }
  
 public void drawDiagram(M3 m, OFG omg) {
 	
-	//algo habra q hacer con OMGGG!!!!
-	
-	
-	
-
   classFigures = [box(text("<cl.path[1..]>"), id("<cl>"),shadow(false), shadowColor("WhiteSmoke")) | cl <- classes(m)]; 
   		  
   edges = // Generalizations
@@ -88,10 +77,12 @@ public void drawDiagram(M3 m, OFG omg) {
           // Realizations
           + [edge("<to>", "<from>", toArrow(ellipse(size(20), fillColor("MediumSeaGreen") )),lineStyle("dash")) | 
           			<to,from> <- m@implements, from <- classes(m), to <- classes(m)]
-          
+			
+			
+		  + [edge("<to>", "<c>", fromArrow(box(size(20),fillColor("LightSkyBlue")))) |
+          			<from,to> <- omg, isField(from), to <- classes(m)]          
           ;
           
-  		  //edges += [edge("<to>", "<c>", fromArrow(box(size(20)))) | <to,from> <- g, isField(from), to <- classes(m), <c,from> <- m@containment];
   
   render(graph(classFigures, edges, hint("layered"), std(gap(50)), std(font("Bitstream Vera Sans")), std(fontSize(12))));
 }
