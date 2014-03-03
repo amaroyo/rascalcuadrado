@@ -27,6 +27,16 @@ public OFG buildGraph(Program p){
   
   return myFlowGraph;
 }
+
+
+rel[loc,loc] generators(Program p) 
+  = { <cl + "this", c > | newAssign(_, cl, c, _) <- p.statemens };
+
+rel[loc,loc] generators54(Program p) 
+  = { <y, c > | assign(_, c, y) <- p.statemens }
+  + { <m + "return", c> |  call(_, c, _, m, _) <- p.statemens}
+  ;
+
    
 OFG prop(OFG g, rel[loc,loc] gen, rel[loc,loc] kill, bool back) {
   OFG IN = { };
@@ -43,18 +53,19 @@ OFG prop(OFG g, rel[loc,loc] gen, rel[loc,loc] kill, bool back) {
   return OUT;
 }
 
-public OFG algorithm(M3 m, OFG g) {
+public OFG algorithm(M3 m, OFG g, Program p) {
 	OFG aux = {};
-	OFG miOfg = {<|java+class:///User/this|,|java+variable:///Main/addUser(java.lang.String)/user|>,<|java+variable:///Main/addUser(java.lang.String)/user|,|java+parameter:///Library/addUser(User)/user|>,<|java+parameter:///Library/addUser(User)/user|,|java+field:///Library/users|>};
-	println("gen");
-	gen = { <c,g1> | <c,_> <- miOfg, c.scheme == "java+class", g1 := c.parent};
-	println(gen);
-	println("non_gen");
-	non_gen = { <nc,ng> | <nc,ng> <- miOfg, nc.scheme != "java+field"};
-	println(non_gen);
-	aux = aux + prop(miOfg,gen,toRel([]),false);
-	println(aux);
-	aux = aux + prop(miOfg,gen,toRel([]),true);
+	//OFG miOfg = {<|java+class:///User/this|,|java+variable:///Main/addUser(java.lang.String)/user|>,<|java+variable:///Main/addUser(java.lang.String)/user|,|java+parameter:///Library/addUser(User)/user|>,<|java+parameter:///Library/addUser(User)/user|,|java+field:///Library/users|>};
+	//println("gen");
+	//gen = { <c,g1> | <c,_> <- miOfg, c.scheme == "java+class", g1 := c.parent};
+	//println(gen);
+	//println("non_gen");
+	//non_gen = { <nc,ng> | <nc,ng> <- miOfg, nc.scheme != "java+class"};
+	//println(non_gen);
+	gen=generators(p)+generators54(p);
+	aux = aux + prop(g,gen,toRel([]),false);
+	aux = aux + prop(g,gen,toRel([]),true);
+	println("aux");
 	println(aux);
 	return aux;
 	/*OFG aux = {};
@@ -96,7 +107,7 @@ public void drawDiagram(M3 m, OFG omg) {
           			<from,to> <- omg, isField(from), to <- classes(m), <c,from> <- m@containment]          
           ;
           
-  figure = graph(classFigures, edges, hint("layered"), std(gap(50)), std(font("Bitstream Vera Sans")), std(fontSize(12)));
+  figure = graph(classFigures, edges, hint("layered"), std(gap(16)), std(font("Bitstream Vera Sans")), std(fontSize(12)));
   render(figure);
   //renderSave(figure, |file:///Users/Aleks/Desktop/figuraRascal.png|);
 }

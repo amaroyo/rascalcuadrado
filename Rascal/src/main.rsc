@@ -17,7 +17,7 @@ public void main(project){
 	g = buildGraph(p);
 	println(g);
 	println("******************OBJECT FLOW GRAPH**********************************");
-	ofg = algorithm(m,g);
+	ofg = algorithm(m,g,p);
 	println(ofg);
 	drawDiagram(m,ofg);
 
