@@ -68,22 +68,31 @@ public OFG algorithm(M3 m, OFG g) {
 public void drawDiagram(M3 m, OFG omg) {
 	
 	//algo habra q hacer con OMGGG!!!!
+	
+	
+	
 
-  classFigures = [box(text("<cl.path[1..]>"), id("<cl>")) | cl <- classes(m)]; 
-  		  // Generalizations
-  edges = [edge("<to>", "<from>", fromArrow(box(size(20)))) | <from,to> <- m@extends, from <- classes(m), to <- classes(m)]
+  classFigures = [box(text("<cl.path[1..]>"), id("<cl>"),shadow(false), shadowColor("WhiteSmoke")) | cl <- classes(m)]; 
+  		  
+  edges = // Generalizations
+  		  [edge("<to>", "<from>", fromArrow(ellipse(size(20), fillColor("MediumPurple")))) | 
+  		  			<from,to> <- m@extends, from <- classes(m), to <- classes(m)]
  		  
- 		  // Associations/Aggregations
-          + [edge("<to>", "<c>", fromArrow(box(size(20)))) | <from,to> <- m@typeDependency, isField(from), to <- classes(m), <c,from> <- m@containment]
+ 		  // Associations/Aggregations 
+          + [edge("<to>", "<c>", fromArrow(box(size(20),fillColor("LightSkyBlue")))) |
+          			<from,to> <- m@typeDependency, isField(from), to <- classes(m), <c,from> <- m@containment]
           
           // Dependencies
           //+ [ edge("<to>", "<c>") | <from,to> <- m@typeDependency, isMethod(from), to <- classes(m),<c,from> <- m@containment
          
           // Realizations
-          + [edge("<to>", "<from>", toArrow(box(size(20)))) | <to,from> <- m@implements, from <- classes(m), to <- classes(m)]
+          + [edge("<to>", "<from>", toArrow(ellipse(size(20), fillColor("MediumSeaGreen") )),lineStyle("dash")) | 
+          			<to,from> <- m@implements, from <- classes(m), to <- classes(m)]
           
           ;
-  //edges += [edge("<to>", "<c>", fromArrow(box(size(20)))) | <to,from> <- g, isField(from), to <- classes(m), <c,from> <- m@containment];
+          
+  		  //edges += [edge("<to>", "<c>", fromArrow(box(size(20)))) | <to,from> <- g, isField(from), to <- classes(m), <c,from> <- m@containment];
+  
   render(graph(classFigures, edges, hint("layered"), std(gap(50)), std(font("Bitstream Vera Sans")), std(fontSize(12))));
 }
  

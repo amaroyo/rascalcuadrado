@@ -3,7 +3,7 @@ module main
 import M3ModelsAndFlowPrograms;
 import FlowGraphsAndClassDiagrams;
 
-
+import IO;
 
 public void main(project){
 
@@ -12,7 +12,7 @@ public void main(project){
 	println(m);
 	println("******************RECONSTRUCTING ARCHITECTURE************************");
 	p = reconstructArchitecture(project);
-	println(g);
+	println(p);
 	println("******************BUILDING GRAPH*************************************");
 	g = buildGraph(p);
 	println(g);
