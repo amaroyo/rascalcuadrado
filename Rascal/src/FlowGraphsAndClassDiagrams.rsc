@@ -45,7 +45,7 @@ OFG prop(OFG g, rel[loc,loc] gen, rel[loc,loc] kill, bool back) {
 
 public OFG algorithm(M3 m, OFG g) {
 	OFG aux = {};
-	for(n <- g) {
+	/*for(n <- g) {
 		if(m@containment, c <- classes(m), f.scheme == "java+constructor"){//O CASTING??=?=?=?=?=
 			caca[0]=g[n];
 			aux += prop(g,caca,toRel([]),false);
@@ -56,9 +56,11 @@ public OFG algorithm(M3 m, OFG g) {
 			caca[1]=caca[0];
 		}
 		
-	}
-	/*non_gen = { f | <c,f> <- m@containment, c <- classes(m), f.scheme == "java+method"};
-	gen = { f | <c,f> <- m@containment, c <- classes(m), f.scheme == "java+constructor"};
+	}*/
+	println("gen");
+	gen = { <g1,c> | <c,g1> <- g, c.scheme == "java+class"};
+	println(gen);
+	/*gen += { f | <c,f> <- m@containment, c <- classes(m), f.scheme == "java+constructor"};
 	aux += prop(g,{<non_gen,toRel([])>},toRel([]),false);*/
 	return aux;
 }
