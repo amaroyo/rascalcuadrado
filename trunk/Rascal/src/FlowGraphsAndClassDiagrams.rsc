@@ -121,21 +121,19 @@ public void drawDiagram(M3 m, OFG omg) {
 }
  
 public str dotDiagram(M3 m, OFG omg) {
+nM="nombreMetodo";
+pF="parametrosFormales";
+ret="output";
   return "digraph classes {
          '  fontname = \"Bitstream Vera Sans\"
          '  fontsize = 8
          '  node [ fontname = \"Bitstream Vera Sans-bold\" fontsize = 10 shape = \"record\" ]
          '  edge [ fontname = \"Bitstream Vera Sans\" fontsize = 8 ]
          '
-         '  <for (c <- classes(m), <c,f> <- m@containment, f <- fields(m), <f,t> <- m@typeDependency) {> 
-         '
-         '		
-         ' 		\"N<c>\" [label=\"{<c.path[1..]> 
-         '	    	<if(f==emptyLoc){> ... StringChars1 ... <} else {> ... StringChars2 ... <}>
-         '
-         '			|+ <f.file> : <t.file>\\l
-         '			|+ die() : void\\l
-         '	}\"]
+         '  <for (c <- classes(m)) {> 
+         '		\"N<c>\" [label=\"{<c.path[1..]>|<for(<c,f> <- m@containment, f <- fields(m), <f,t> <- m@typeDependency){>+ <f.file> : <t.file>\\l<}>
+         		'|+ <nM>(<pF>) : <ret>\\l
+         '		}\"]
          '  <} /* this is the end of the for loop */>
          ' 
          '  edge [arrowhead=\"empty\"]
