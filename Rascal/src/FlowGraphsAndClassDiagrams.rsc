@@ -8,6 +8,7 @@ import List;
 import Relation;
 import lang::java::m3::Core;
 import Set;
+import String;
  
 import IO;
 import vis::Figure; 
@@ -98,9 +99,7 @@ public void drawDiagram(M3 m, OFG omg) {
 }
  
 public str dotDiagram(M3 m, OFG omg) {
-nM="nombreMetodo";
-pF="parametrosFormales";
-ret="output";
+ret="ret";
   return "digraph classes {
          '  fontname = \"Bitstream Vera Sans\"
          '  fontsize = 8
@@ -108,8 +107,8 @@ ret="output";
          '  edge [ fontname = \"Bitstream Vera Sans\" fontsize = 8 ]
          '
          '  <for (c <- classes(m)) {> 
-         '		\"N<c>\" [label=\"{<c.path[1..]>|<for(<c,f> <- m@containment, <f,t> <- m@typeDependency, f <- fields(m), !isInterface(t)){>+ <f.file> : <t.file>\\l<}>
-         		'|+ <nM>(<pF>) : <ret>\\l
+         '		\"N<c>\" [label=\"{<c.path[1..]>|<for(<c,f> <- m@containment, <f,t> <- m@typeDependency, f <- fields(m), !isInterface(t)){>+ <f.file> : <t.file>\\l<}>|
+         		'<for(<c,metodo> <- m@containment, metodo <- methods(m)){>+ <replaceAll(metodo.file,"java.lang.","")> : <ret>\\l<}>
          '		}\"]
          '  <} /* this is the end of the for loop */>
          ' 
