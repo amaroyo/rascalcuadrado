@@ -136,9 +136,9 @@ public str dotDiagram(M3 m, OFG omg) {
          '  \"N<from>\" -\> \"N<to>\" <}>
 		 '
          '  
-         '  <for (<from,to> <- m@typeDependency + omg, isField(from), to <- classes(m), <c,from> <- m@containment, c != to) {>
+         '  <for (<from,to> <- m@typeDependency + omg, isField(from), to <- classes(m), <c,from> <- m@containment, c != to, <name,from> <- m@names) {>
          '  edge [arrowhead=\"normal\"
-         '		  headlabel =\"<from>\"]
+         '		  label =\"<name>\"]
          '  \"N<c>\" -\> \"N<to>\" <}>
 		 '
          '  edge [arrowhead=\"empty\"
