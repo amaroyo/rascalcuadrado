@@ -56,43 +56,18 @@ OFG prop(OFG g, rel[loc,loc] gen, rel[loc,loc] kill, bool back) {
 }
 
 public OFG algorithm(M3 m, OFG g, Program p) {
-	OFG aux = {};
-	//OFG miOfg = {<|java+class:///User/this|,|java+variable:///Main/addUser(java.lang.String)/user|>,<|java+variable:///Main/addUser(java.lang.String)/user|,|java+parameter:///Library/addUser(User)/user|>,<|java+parameter:///Library/addUser(User)/user|,|java+field:///Library/users|>};
-	//println("gen");
-	//gen = { <c,g1> | <c,_> <- g, c.scheme == "java+class", g1 := c.parent};
-	//println(gen);
-	//println("non_gen");
-	//non_gen = { <nc,emptyLoc> | <nc,_> <- g, nc.scheme != "java+class"};
-	//println(non_gen);
+	OFG propOfg = {};
 	gen=generators(p)+generators54(p);
-	aux = aux + prop(g,gen,toRel([]),false);
-	aux = aux + prop(g,gen,toRel([]),true);
-	println("aux");
-	println(aux);
-	return aux;
-	/*OFG aux = {};
-	loc empty_loc;
-	println("non_gen");
-	gen = { <c,g1> | <c,_> <- g, c.scheme == "java+class", g1 := c.parent};
-	println(gen);
-	println("non_gen");
-	non_gen = { <nc,ng> | <nc,ng> <- g, nc.scheme != "java+class"};
-	println(non_gen);
-	aux = aux + prop(g,gen+non_gen,toRel([]),false);
-	println(aux);
-	aux = aux + prop(g,gen+non_gen,toRel([]),true);
-	println(aux);
-	return aux;*/
+	propOfg = propOfg + prop(g,gen,toRel([]),false);
+	propOfg = propOfg + prop(g,gen,toRel([]),true);
+	return propOfg;
 }
  
 public void drawDiagram(M3 m, OFG omg) {
 	
   classFigures = [box(text("<cl.path[1..]>"), id("<cl>"),shadow(false), shadowColor("WhiteSmoke")) | cl <- classes(m)]; 
   		  
-  
-//  fields = fieldNames = [ <f,c> | <f,c> <- m@containment, fields(f), classes(c)];
-  
-  
+
   edges = // Generalizations
   		  [edge("<to>", "<from>", fromArrow(ellipse(size(20), fillColor("MediumPurple")))) | 
   		  			<from,to> <- m@extends, from <- classes(m), to <- classes(m)]
@@ -117,7 +92,9 @@ public void drawDiagram(M3 m, OFG omg) {
  // figure = graph(classFigures, edges, hint("layered"), std(gap(46)), std(font("Bitstream Vera Sans")), std(fontSize(12)));
  // render(figure);
  // renderSave(figure, |file:///Users/Aleks/Desktop/figuraRascal.png|);
-  showDot(m, omg, |file:///Users/Aleks/Desktop/try.dot|);
+  showDot(m, omg, |file:///Users/Aleks/Desktop/<m.id.authority>.dot|);
+  //showDot(m, omg, |home:///<m.id.authority>.dot|);
+  
 }
  
 public str dotDiagram(M3 m, OFG omg) {
@@ -131,7 +108,7 @@ ret="output";
          '  edge [ fontname = \"Bitstream Vera Sans\" fontsize = 8 ]
          '
          '  <for (c <- classes(m)) {> 
-         '		\"N<c>\" [label=\"{<c.path[1..]>|<for(<c,f> <- m@containment, f <- fields(m), <f,t> <- m@typeDependency){>+ <f.file> : <t.file>\\l<}>
+         '		\"N<c>\" [label=\"{<c.path[1..]>|<for(<c,f> <- m@containment, <f,t> <- m@typeDependency, f <- fields(m), !isInterface(t)){>+ <f.file> : <t.file>\\l<}>
          		'|+ <nM>(<pF>) : <ret>\\l
          '		}\"]
          '  <} /* this is the end of the for loop */>
