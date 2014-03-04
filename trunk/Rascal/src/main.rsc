@@ -2,10 +2,13 @@ module main
 
 import M3ModelsAndFlowPrograms;
 import FlowGraphsAndClassDiagrams;
-
 import IO;
 
-public void main(project){
+//Information extraction
+import lang::java::jdt::m3::Core;
+import lang::java::jdt::m3::AST;
+
+public M3 main(project){
 
 	println("******************EXTRACTING INFORMATION*****************************");
 	m = extractInfo(project);
@@ -20,5 +23,6 @@ public void main(project){
 	ofg = algorithm(m,g,p);
 	println(ofg);
 	drawDiagram(m,ofg);
+	return m;
 
 }
