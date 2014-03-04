@@ -7,7 +7,7 @@ import lang::ofg::ast::Java2OFG;
 import List;
 import Relation;
 import lang::java::m3::Core;
-
+import Set;
  
 import IO;
 import vis::Figure; 
@@ -124,11 +124,18 @@ public str dotDiagram(M3 m, OFG omg) {
   return "digraph classes {
          '  fontname = \"Bitstream Vera Sans\"
          '  fontsize = 8
-         '  node [ fontname = \"Bitstream Vera Sans\" fontsize = 8 shape = \"record\" ]
+         '  node [ fontname = \"Bitstream Vera Sans-bold\" fontsize = 10 shape = \"record\" ]
          '  edge [ fontname = \"Bitstream Vera Sans\" fontsize = 8 ]
          '
-         '  <for (cl <- classes(m)) { /* a for loop in a string template, just like PHP */>
-         ' \"N<cl>\" [label=\"{<cl.path[1..] /* a Rascal expression between < > brackets is spliced into the string */>||}\"]
+         '  <for (c <- classes(m), <c,f> <- m@containment, f <- fields(m), <f,t> <- m@typeDependency) {> 
+         '
+         '		
+         ' 		\"N<c>\" [label=\"{<c.path[1..]> 
+         '	    	<if(f==emptyLoc){> ... StringChars1 ... <} else {> ... StringChars2 ... <}>
+         '
+         '			|+ <f.file> : <t.file>\\l
+         '			|+ die() : void\\l
+         '	}\"]
          '  <} /* this is the end of the for loop */>
          ' 
          '  edge [arrowhead=\"empty\"]
