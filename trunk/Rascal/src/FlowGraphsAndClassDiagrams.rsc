@@ -14,6 +14,8 @@ import vis::Figure;
 import vis::Render;
  
 alias OFG = rel[loc from, loc to];
+public loc emptyLoc = |id:///|;
+
  
 public OFG buildGraph(Program p){ 
 	OFG myFlowGraph = 
@@ -57,10 +59,10 @@ public OFG algorithm(M3 m, OFG g, Program p) {
 	OFG aux = {};
 	//OFG miOfg = {<|java+class:///User/this|,|java+variable:///Main/addUser(java.lang.String)/user|>,<|java+variable:///Main/addUser(java.lang.String)/user|,|java+parameter:///Library/addUser(User)/user|>,<|java+parameter:///Library/addUser(User)/user|,|java+field:///Library/users|>};
 	//println("gen");
-	//gen = { <c,g1> | <c,_> <- miOfg, c.scheme == "java+class", g1 := c.parent};
+	//gen = { <c,g1> | <c,_> <- g, c.scheme == "java+class", g1 := c.parent};
 	//println(gen);
 	//println("non_gen");
-	//non_gen = { <nc,ng> | <nc,ng> <- miOfg, nc.scheme != "java+class"};
+	//non_gen = { <nc,emptyLoc> | <nc,_> <- g, nc.scheme != "java+class"};
 	//println(non_gen);
 	gen=generators(p)+generators54(p);
 	aux = aux + prop(g,gen,toRel([]),false);
@@ -87,6 +89,10 @@ public void drawDiagram(M3 m, OFG omg) {
 	
   classFigures = [box(text("<cl.path[1..]>"), id("<cl>"),shadow(false), shadowColor("WhiteSmoke")) | cl <- classes(m)]; 
   		  
+  
+//  fields = fieldNames = [ <f,c> | <f,c> <- m@containment, fields(f), classes(c)];
+  
+  
   edges = // Generalizations
   		  [edge("<to>", "<from>", fromArrow(ellipse(size(20), fillColor("MediumPurple")))) | 
   		  			<from,to> <- m@extends, from <- classes(m), to <- classes(m)]
@@ -96,7 +102,8 @@ public void drawDiagram(M3 m, OFG omg) {
           			<from,to> <- m@typeDependency, isField(from), to <- classes(m), <c,from> <- m@containment]
           
           // Dependencies
-          //+ [ edge("<to>", "<c>") | <from,to> <- m@typeDependency, isMethod(from), to <- classes(m),<c,from> <- m@containment
+       //  + [ edge("<to>", "<c>", fromArrow(box(size(20),fillColor("LightSkyBlue"))),lineStyle("dash")) | 
+       //  			<from,to> <- m@typeDependency, isMethod(from), to <- classes(m), <c,from> <- m@containment, c != to]
          
           // Realizations
           + [edge("<to>", "<from>", toArrow(ellipse(size(20), fillColor("MediumSeaGreen") )),lineStyle("dash")) | 
@@ -107,12 +114,13 @@ public void drawDiagram(M3 m, OFG omg) {
           			<from,to> <- omg, isField(from), to <- classes(m), <c,from> <- m@containment]          
           ;
           
-  figure = graph(classFigures, edges, hint("layered"), std(gap(16)), std(font("Bitstream Vera Sans")), std(fontSize(12)));
-  render(figure);
-  //renderSave(figure, |file:///Users/Aleks/Desktop/figuraRascal.png|);
+ // figure = graph(classFigures, edges, hint("layered"), std(gap(46)), std(font("Bitstream Vera Sans")), std(fontSize(12)));
+ // render(figure);
+ // renderSave(figure, |file:///Users/Aleks/Desktop/figuraRascal.png|);
+  showDot(m, omg, |file:///Users/Aleks/Desktop/try.dot|);
 }
  
-public str dotDiagram(M3 m) {
+public str dotDiagram(M3 m, OFG omg) {
   return "digraph classes {
          '  fontname = \"Bitstream Vera Sans\"
          '  fontsize = 8
@@ -122,14 +130,34 @@ public str dotDiagram(M3 m) {
          '  <for (cl <- classes(m)) { /* a for loop in a string template, just like PHP */>
          ' \"N<cl>\" [label=\"{<cl.path[1..] /* a Rascal expression between < > brackets is spliced into the string */>||}\"]
          '  <} /* this is the end of the for loop */>
+         ' 
+         '  edge [arrowhead=\"empty\"]
+         '  <for (<from, to> <- m@extends, from <- classes(m), to <- classes(m)) {>
+         '  \"N<from>\" -\> \"N<to>\" <}>
+		 '
+         '  
+         '  <for (<from,to> <- m@typeDependency + omg, isField(from), to <- classes(m), <c,from> <- m@containment, c != to) {>
+         '  edge [arrowhead=\"normal\"
+         '		  headlabel =\"<from>\"]
+         '  \"N<c>\" -\> \"N<to>\" <}>
+		 '
+         '  edge [arrowhead=\"empty\"
+         '		  style=\"dashed\"]
+         '  <for (<to,from> <- m@implements, from <- classes(m), to <- classes(m)) {>
+         '  \"N<to>\" -\> \"N<from>\" <}>
          '
-         '  <for (<from, to> <- m@extends) {>
-         '  \"N<to>\" -\> \"N<from>\" [arrowhead=\"empty\"]<}>
+         ' /* edge [arrowhead=\"normal\"
+         '		  style=\"dashed\"]
+         '  <for (<from,to> <- m@typeDependency, isMethod(from), to <- classes(m), <c,from> <- m@containment, c != to) {>
+         '  \"N<c>\" -\> \"N<to>\" <}> */
+       
+        
+     
          '}";
 }
  
 public void showDot(M3 m) = showDot(m, |home:///<m.id.authority>.dot|);
  
-public void showDot(M3 m, loc out) {
-  writeFile(out, dotDiagram(m));
+public void showDot(M3 m, OFG omg, loc out) {
+  writeFile(out, dotDiagram(m,omg));
 }
